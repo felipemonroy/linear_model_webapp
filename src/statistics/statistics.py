@@ -2,91 +2,14 @@
 Statistics from models.
 """
 
-from abc import abstractmethod
-from dataclasses import dataclass
-from typing import Protocol, Tuple
-
 import numpy as np
 import numpy.typing as npt
 from scipy.stats import shapiro
+from src.statistics.statistic import Interval, TestHypotheses, TestValue
 from statsmodels.stats.stattools import durbin_watson
 
 
-class TestHypotheses(Protocol):
-    """Protocol that represents an hypotheses test."""
-
-    @property
-    @abstractmethod
-    def statistic(self):
-        """Get the test statistic."""
-        ...
-
-    @property
-    @abstractmethod
-    def confidence_interval(self):
-        """Get the test statistic confidence interval."""
-        ...
-
-    @property
-    @abstractmethod
-    def p_value(self):
-        """Get the p-value."""
-        ...
-
-    @property
-    @abstractmethod
-    def hypotheses(self):
-        """Get the hypotheses."""
-        ...
-
-    @property
-    @abstractmethod
-    def conclusion(self):
-        """Get the test conclusion."""
-        ...
-
-
-class TestValue(Protocol):
-    """Protocol that represents a value tested."""
-
-    @property
-    @abstractmethod
-    def value(self):
-        """Get the value to be tested."""
-        ...
-
-    @property
-    @abstractmethod
-    def interval(self):
-        """Get the interval where the test is satisfied."""
-        ...
-
-    @property
-    @abstractmethod
-    def conclusion(self):
-        """Get the test conclusion."""
-        ...
-
-
-@dataclass
-class Interval:
-    """Representation of an interval."""
-
-    lower_limit: float
-    upper_limit: float
-    name: str = "Interval"
-
-    def contain(self, value: float) -> bool:
-        """Check if the value is inside the interval."""
-        if self.lower_limit <= value <= self.upper_limit:
-            return True
-        return False
-
-    def __str__(self) -> str:
-        return f"{self.name}: [{self.lower_limit}, {self.upper_limit}]"
-
-
-class ShapiroWilkTest:
+class ShapiroWilkTest(TestHypotheses):
     """Shapiro Wilk test class."""
 
     def __init__(self, resid: npt.ArrayLike, alpha: float = 0.05):
@@ -99,7 +22,7 @@ class ShapiroWilkTest:
         return shapiro(self.resid).statistic
 
     @property
-    def confidence_interval(self) -> Tuple[float, float]:
+    def confidence_interval(self) -> Interval:
         """Get the test statistic confidence interval."""
         raise NotImplementedError(
             "Confidence intervals are not implemented for this test"
@@ -124,16 +47,16 @@ class ShapiroWilkTest:
         if self.p_value > self.alpha:
             return """
                 There is not enough evidence to conclude that
-                 the residuals do not come from a normal distribution
+                the residuals do not come from a normal distribution
                 """
         else:
             return """
                 There is enough evidence to conclude that
-                 the residuals do not come from a normal distribution
+                the residuals do not come from a normal distribution
                 """
 
 
-class DarwinWatsonTest:
+class DarwinWatsonTest(TestValue):
     """Darwin Watson test class."""
 
     def __init__(
