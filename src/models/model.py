@@ -11,8 +11,8 @@ from numpy.typing import ArrayLike
 class Model(Protocol):
     """Abstract representation of a model"""
 
-    # def fit(self, X: ArrayLike, y: ArrayLike) -> None:
-    #     """Fit the model."""
+    def fit(self, X: ArrayLike, y: ArrayLike) -> None:
+        """Fit the model."""
 
     def predict(self, X: ArrayLike) -> np.ndarray:
         """Predict the response variable given predictors."""
@@ -20,9 +20,6 @@ class Model(Protocol):
 
 class RegressionModel(Model):
     """Abstract representation of a regression model object."""
-
-    def resid(self, X: ArrayLike, y: ArrayLike) -> np.ndarray:
-        """Get the residuals of the trained model."""
 
 
 class ClassificationModel(Model):
