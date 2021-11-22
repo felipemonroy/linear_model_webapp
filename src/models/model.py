@@ -2,7 +2,7 @@
 Models structure.
 """
 
-from typing import Protocol
+from typing import List, Protocol
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -20,6 +20,9 @@ class Model(Protocol):
 
 class RegressionModel(Model):
     """Abstract representation of a regression model object."""
+
+    def equation(self, x_names: List[str], y_name: str) -> str:
+        """Get the linear regression equation"""
 
 
 class ClassificationModel(Model):
