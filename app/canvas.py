@@ -5,7 +5,7 @@ Canvas.
 from src.settings.settings import AppConfig
 
 from app.pages.page import MultiPage
-from app.pages.pages import DiagnosticPage, MetricPage, OverallPage
+from app.pages.pages import DiagnosticPage, HomePage, MetricPage, OverallPage
 
 
 class Canvas:
@@ -20,12 +20,14 @@ class Canvas:
         """Render each one of the sections."""
         page = MultiPage()
 
+        page_home = HomePage(self._parameters)
         page_overall = OverallPage(self._parameters)
         page_metric = MetricPage(self._parameters)
-        diagnostic_page = DiagnosticPage(self._parameters)
+        page_diagnostic = DiagnosticPage(self._parameters)
 
+        page.add_page(page_home)
         page.add_page(page_overall)
         page.add_page(page_metric)
-        page.add_page(diagnostic_page)
+        page.add_page(page_diagnostic)
 
         page.run()
