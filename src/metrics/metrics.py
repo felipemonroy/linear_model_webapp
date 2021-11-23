@@ -3,11 +3,18 @@ Models performance metrics.
 """
 
 import numpy as np
+from numpy.typing import ArrayLike
 from src.metrics.metric import Metrics
+from src.models.model import Model
 
 
 class RegressionMetrics(Metrics):
     """Representation of a regression model metrics."""
+
+    def __init__(self, model: Model, X: ArrayLike, y: ArrayLike):
+        self.y_true = np.array(y)
+        self.X = np.array(X)
+        self.y_pred = model.predict(self.X)
 
     @property
     def r_2(self) -> str:
