@@ -2,23 +2,18 @@
 App
 """
 
-import numpy as np
+from app.canvas import Canvas
+from src.settings.settings import AppConfig
 
-from src.metrics import LinearModelMetrics
-from src.models import LinearRegressionExpanded
-from src.statistics import ShapiroWilkTest
 
-X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
+def main():
+    """Main function."""
 
-y = np.random.rand(4)
+    parameters = AppConfig()
 
-reg = LinearRegressionExpanded()
-reg.fit(X, y)
+    app = Canvas(parameters)
+    app.build()
 
-metrics = LinearModelMetrics(reg, X, y)
 
-swt = ShapiroWilkTest(reg.resid(X, y))
-
-print(metrics.r_2)
-
-print(swt.p_value)
+if __name__ == "__main__":
+    main()
