@@ -10,16 +10,18 @@ class RegressionMetrics(Metrics):
     """Representation of a regression model metrics."""
 
     @property
-    def r_2(self) -> float:
+    def r_2(self) -> str:
         """Computes the coefficient of determination R^2."""
         ssr = np.sum((self.y_pred - self.y_true.mean()) ** 2)
         sst = np.sum((self.y_true - self.y_true.mean()) ** 2)
-        return ssr / sst
+        return f"{ssr / sst:.2f}"
 
     @property
-    def mape(self) -> float:
+    def mape(self) -> str:
         """Computes the MAPE."""
-        return np.sum(np.absolute((self.y_true - self.y_pred)) / self.y_true)
+        return (
+            f"{np.sum(np.absolute((self.y_true - self.y_pred)) / self.y_true)*100:.2f}%"
+        )
 
     @property
     def type(self) -> str:
