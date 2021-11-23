@@ -1,0 +1,6 @@
+APP_NAME: "Linear Model Tool"
+
+FORMAT_PLOTS: &format_plots
+  AXIS_FONT_SIZE: 16
+  TICK_FONT_SIZE: 14
+  TEMPLATE: "simple_white"
